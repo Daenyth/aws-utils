@@ -21,11 +21,19 @@ module Aws
               :secret_access_key => config[config_profile]["aws_secret_access_key"]
             }
           else
-            iam_uri = URI.parse("http://169.254.169.254/latest/meta-data/iam/")
-            response = Net::HTTP.start(iam_uri.host, iam_uri.port) { |http| http.get(iam_uri.path) }
-            if response.code != 404
-              "IAM"
-            else
+            begin
+              iam_uri = URI.parse("http://169.254.169.254/latest/meta-data/iam/")
+              response = Net::HTTP.start(iam_uri.host, iam_uri.port) do |http|
+                http.read_timeout=1
+                http.open_timeout=1
+                http.get(iam_uri.path)
+              end
+              if response.code != 404
+                "IAM"
+              else
+                nil
+              end
+            rescue
               nil
             end
           end

@@ -3,7 +3,7 @@ module Aws
     module ConfigLoader
       public
       def self.load()
-        filename = ENV["AWS_CONFIG_PATH"] || "#{ENV["HOME"]}/.aws/config"
+        filename = (ENV["AWS_CONFIG_PATH"] || "~/.aws/config").sub("~", Dir.home)
         if !File.exists?(filename)
           return nil
         end
