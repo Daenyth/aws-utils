@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler", "~> 1.6"
   s.add_development_dependency "rake"
   
-  s.add_runtime_dependency 'aws-sdk', '~> 1.48'
+  s.add_runtime_dependency 'aws-sdk-core', '2.0.0.rc12'
   s.add_runtime_dependency 'trollop', '~> 2.0'
   
   
