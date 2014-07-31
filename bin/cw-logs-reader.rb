@@ -80,6 +80,14 @@ class LogStream
   def events(options = {})
     EventCollection.new(@client, self, options)
   end
+
+  def name
+    attributes.log_stream_name
+  end
+
+  def has_ingested?
+    !!attributes.last_ingestion_time
+  end
 end
 
 class LogStreamCollection
@@ -149,7 +157,8 @@ class CWLogsReader
 
     groups.map do |group|
       streams = group.streams.select do |s|
-        s.attributes.log_stream_name.match(stream_regex) &&
+        s.name.match(stream_regex) &&
+          s.has_ingested? &&
           (!begin_at_time || s.attributes.last_ingestion_time > (time_to_ms(begin_at_time)))
       end
       streams.map do |stream|
