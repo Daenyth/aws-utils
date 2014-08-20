@@ -1,3 +1,8 @@
+Setup
+=========
+
+Run `bundle install`
+
 aws-utils
 =========
 
